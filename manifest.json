@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Unicode Font Changer",
+  "version": "1.0.0",
+  "description": "Change fonts using Unicode characters on any page using Ctrl+M and Ctrl+Shift+M",
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["content.css"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
