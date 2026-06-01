@@ -44,8 +44,11 @@ When developing locally or reloading the extension, content scripts can be injec
 - Translating text checks alphabetical case indexes (e.g., `'a'` to `'z'`) and shifts character array mappings.
 
 ### 4. Text Interception & Injection
-- **Typing Interceptor**: A capture-phase listener intercepts `beforeinput` events. When an active font is selected and `e.inputType === 'insertText'`, it calls `e.preventDefault()` to block the normal typing, translates the incoming character, and inserts it at the caret position using `document.execCommand('insertText', false, translated)`. This preserves the browser's undo/redo history.
-- **Selection Handling**: When `Ctrl+M` is pressed, `lastSelection` immediately captures selection offsets and elements *before* focus shifts to the extension's search input. This prevents focus stealing or selection loss.
+- **Typing Interceptor**: A capture-phase listener intercepts `beforeinput` events on the window. When an active font is selected and `e.inputType === 'insertText'`, it calls `e.preventDefault()` and `e.stopImmediatePropagation()` to block standard typing. The translated character is then inserted at the caret position.
+- **Framework Editor Compatibility (Slate.js/Discord)**: Rather than raw DOM manipulation (`execCommand`), which desynchronizes the React state of framework-managed editors (like Slate.js on Discord), the extension detects framework editors via `isFrameworkEditor()` and dispatches a synthetic native `InputEvent` of type `beforeinput` with `inputType: 'insertText'` containing the translated text. Framework editors handle this event natively, keeping state, arrow-key navigation, backspace, and placeholder layouts fully functional.
+- **Standard Fallback**: For standard contenteditables and inputs, the extension uses `document.execCommand('insertText')` as primary. If it returns `false`, it falls back to native Range/Selection API manipulation (deleting range content, inserting a text node, and shifting selection carets forward).
+- **Caret/Selection Restoration**: To prevent cursor focus loss when the search menu closes (especially on `<html contenteditable>` data URIs or standard pages), `closeMenu` restores `lastSelection` (including collapsed cursor carets) and refocuses the active host element.
+- **Recursive Interception Guard**: A global `isInserting` flag prevents the extension from intercepting its own synthetic events or replacements. Both `insertTextEvent` and `replaceSelection` manage this flag.
 
 ### 5. Strict Upside-Down Reversion
 - To prevent normal ASCII alphanumeric strings (like `"bun"`) from being identified as upside-down and reversed, we maintain a strict set of unique non-ASCII flipped characters (`UNIQUE_UPSIDE_DOWN_CHARS`).
@@ -54,6 +57,29 @@ When developing locally or reloading the extension, content scripts can be injec
 ---
 
 ## Development and Testing
-- Run Python's built-in HTTP server: `python3 -m http.server 8080` in the workspace.
-- Load `/home/toms1/ChangeFontChromeExtension` into Chrome via `chrome://extensions/` using **Load unpacked**.
-- Navigate to `http://localhost:8080/test.html` to test text inputs, textareas, and contenteditable containers.
+
+There are three ways to apply and test the extension during development:
+
+### 1. Local Test Bench (`test.html`)
+The workspace includes a `test.html` page that directly loads `content.js` via a `<script>` tag. This is the fastest way to test changes locally.
+- Run Python's built-in HTTP server in the workspace:
+  ```bash
+  python3 -m http.server 8080
+  ```
+- Open `http://localhost:8080/test.html` in your browser.
+- Type in the input fields, select text, and use `Ctrl+M` to test the styling and behavior.
+
+### 2. Manual Console Injection (On Any Web Page)
+You can manually run and test the extension on any active website without installing the extension.
+- Copy the entire code of `content.js`.
+- Open Chrome DevTools (`F12` or `Ctrl+Shift+I`) on any target website (e.g., `wikipedia.org`, `github.com`).
+- Paste the copied code into the **Console** tab and press `Enter` to inject the extension.
+- Select text on the page or focus an input field, then press `Ctrl+M` to test.
+
+### 3. Load unpacked Chrome Extension
+To test the extension inside the full extension environment:
+- Open Google Chrome and go to `chrome://extensions/`.
+- Enable **Developer mode** (toggle in the top-right corner).
+- Click **Load unpacked** in the top-left corner.
+- Select the `ChangeFontChromeExtension` workspace directory.
+- The extension will inject `content.js` on every page load. Use `Ctrl+M` to activate.

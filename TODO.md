@@ -21,9 +21,11 @@ This file tracks active development tasks, completed features, and bug fixes for
   - *Fix*: Integrated a set of strict unique non-ASCII flipped symbols (`UNIQUE_UPSIDE_DOWN_CHARS`). Standard alphanumeric words containing letters like `'q', 'p', 'b', 'n', 'u'` are no longer mistakenly detected as upside-down or reversed in order.
 - [x] **Bug**: Selecting a font in the menu (click or enter) sometimes doesn't close the menu (then clicking another font doubles all typed characters, e.g. a to 𝐚𝐚).
   - *Fix*: Enforced a single script execution guard (`window.__fontChangerLoaded`) around the content script block. Multiple evaluations (such as standard Chrome injections overlaying manual script loads) no longer instantiate redundant DOM menus or duplicate keyboard listeners.
+- [x] **Bug**: Some pages, such as `discord.com` or `data:text/html,<html contenteditable>` do not function at (typing text with a font active does not change the typed text). 
 
 ## Future Enhancements & Maintenance
 
+- [ ] Change the font selection menu to use a grid layout, so all fonts are viewable without scrolling.
 - [ ] Add options page to customize keyboard shortcut combinations.
 - [ ] Add toggle to choose between light and dark glassmorphic themes.
 - [ ] Add more Unicode stylized scripts (e.g. bold-fraktur, italic cursive).

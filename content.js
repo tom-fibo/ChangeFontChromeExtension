@@ -11,6 +11,7 @@ if (!window.__fontChangerLoaded) {
     let lastSelection = null; // Store captured selection details
     let overlayEl = null;
     let shadowRoot = null;
+    let isInserting = false;
 
     // Helper to generate contiguous Unicode character arrays
     function makeRange(startCode, length = 26) {
@@ -186,8 +187,9 @@ if (!window.__fontChangerLoaded) {
       'Ɩ', 'ᄅ', 'Ɛ', 'ㄣ', 'ϛ', 'ㄥ'
     ]);
 
-    // Global Reverse Lookup Map
-    const reverseMap = new Map();
+    // Global Reverse Lookup Maps
+    const fontReverseMap = new Map();
+    const upsideDownReverseMap = new Map();
 
     function initReverseMap() {
       const UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -200,7 +202,7 @@ if (!window.__fontChangerLoaded) {
         if (font.upper) {
           font.upper.forEach((styled, idx) => {
             if (styled !== UPPER[idx]) {
-              reverseMap.set(styled, UPPER[idx]);
+              fontReverseMap.set(styled, UPPER[idx]);
             }
           });
         }
@@ -208,7 +210,7 @@ if (!window.__fontChangerLoaded) {
         if (font.lower) {
           font.lower.forEach((styled, idx) => {
             if (styled !== LOWER[idx]) {
-              reverseMap.set(styled, LOWER[idx]);
+              fontReverseMap.set(styled, LOWER[idx]);
             }
           });
         }
@@ -216,7 +218,7 @@ if (!window.__fontChangerLoaded) {
         if (font.digits) {
           font.digits.forEach((styled, idx) => {
             if (styled !== DIGITS[idx]) {
-              reverseMap.set(styled, DIGITS[idx]);
+              fontReverseMap.set(styled, DIGITS[idx]);
             }
           });
         }
@@ -224,7 +226,7 @@ if (!window.__fontChangerLoaded) {
 
       for (const [normal, styled] of Object.entries(UPSIDE_DOWN_MAP)) {
         if (normal !== styled) {
-          reverseMap.set(styled, normal);
+          upsideDownReverseMap.set(styled, normal);
         }
       }
     }
@@ -265,9 +267,17 @@ if (!window.__fontChangerLoaded) {
         }
       });
 
-      let normalChars = chars.map(char => reverseMap.get(char) || char);
+      const isUpsideDown = upsideDownCount > chars.length / 3;
 
-      if (upsideDownCount > chars.length / 3) {
+      let normalChars = chars.map(char => {
+        if (isUpsideDown) {
+          return upsideDownReverseMap.get(char) || fontReverseMap.get(char) || char;
+        } else {
+          return fontReverseMap.get(char) || char;
+        }
+      });
+
+      if (isUpsideDown) {
         normalChars.reverse();
       }
 
@@ -291,10 +301,11 @@ if (!window.__fontChangerLoaded) {
       }
 
       const selection = window.getSelection();
-      if (selection && selection.toString().length > 0) {
+      if (selection && selection.toString().length > 0 && selection.rangeCount > 0) {
         return {
           type: 'document',
-          selection: selection,
+          range: selection.getRangeAt(0).cloneRange(),
+          activeElement: activeEl,
           text: selection.toString()
         };
       }
@@ -302,32 +313,79 @@ if (!window.__fontChangerLoaded) {
       return null;
     }
 
+    function isFrameworkEditor(el) {
+      if (!el) return false;
+      return !!(
+        el.closest('[data-slate-editor="true"]') ||
+        el.closest('[data-slate-node]') ||
+        el.closest('.DraftEditor-root') ||
+        el.closest('[data-lexical-editor="true"]') ||
+        window.location.hostname.includes('discord.com')
+      );
+    }
+
+    function insertTextEvent(target, text) {
+      const event = new InputEvent('beforeinput', {
+        bubbles: true,
+        cancelable: true,
+        inputType: 'insertText',
+        data: text
+      });
+      isInserting = true;
+      try {
+        target.dispatchEvent(event);
+      } finally {
+        isInserting = false;
+      }
+    }
+
     function replaceSelection(selectionInfo, newText) {
-      if (selectionInfo.type === 'input') {
-        const el = selectionInfo.element;
-        const start = selectionInfo.start;
-        const end = selectionInfo.end;
-        
-        el.focus();
-        el.setSelectionRange(start, end);
-        const succeeded = document.execCommand('insertText', false, newText);
-        
-        if (!succeeded) {
-          const val = el.value;
-          el.value = val.substring(0, start) + newText + val.substring(end);
-          el.selectionStart = el.selectionEnd = start + newText.length;
-          el.dispatchEvent(new Event('input', { bubbles: true }));
-        }
-      } else if (selectionInfo.type === 'document') {
-        const sel = selectionInfo.selection;
-        if (sel.rangeCount > 0) {
+      isInserting = true;
+      try {
+        if (selectionInfo.type === 'input') {
+          const el = selectionInfo.element;
+          const start = selectionInfo.start;
+          const end = selectionInfo.end;
+          
+          el.focus();
+          el.setSelectionRange(start, end);
           const succeeded = document.execCommand('insertText', false, newText);
+          
           if (!succeeded) {
-            const range = sel.getRangeAt(0);
-            range.deleteContents();
-            range.insertNode(document.createTextNode(newText));
+            const val = el.value;
+            el.value = val.substring(0, start) + newText + val.substring(end);
+            el.selectionStart = el.selectionEnd = start + newText.length;
+            el.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+        } else if (selectionInfo.type === 'document') {
+          const sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(selectionInfo.range);
+          
+          const target = selectionInfo.activeElement || document.activeElement;
+          if (target && typeof target.focus === 'function') {
+            target.focus();
+          }
+
+          if (isFrameworkEditor(target)) {
+            insertTextEvent(target, newText);
+          } else {
+            const succeeded = document.execCommand('insertText', false, newText);
+            if (!succeeded) {
+              const range = selectionInfo.range;
+              range.deleteContents();
+              const textNode = document.createTextNode(newText);
+              range.insertNode(textNode);
+              // Advance selection caret to after the inserted node
+              range.setStartAfter(textNode);
+              range.setEndAfter(textNode);
+              sel.removeAllRanges();
+              sel.addRange(range);
+            }
           }
         }
+      } finally {
+        isInserting = false;
       }
     }
 
@@ -817,9 +875,25 @@ if (!window.__fontChangerLoaded) {
 
       setTimeout(() => {
         overlay.style.display = 'none';
-        if (lastActiveElement && typeof lastActiveElement.focus === 'function') {
+        
+        // Restore selection and focus
+        if (lastSelection) {
+          if (lastSelection.type === 'input') {
+            const el = lastSelection.element;
+            el.focus();
+            el.setSelectionRange(lastSelection.start, lastSelection.end);
+          } else if (lastSelection.type === 'document') {
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(lastSelection.range);
+            if (lastSelection.activeElement && typeof lastSelection.activeElement.focus === 'function') {
+              lastSelection.activeElement.focus();
+            }
+          }
+        } else if (lastActiveElement && typeof lastActiveElement.focus === 'function') {
           lastActiveElement.focus();
         }
+
         // Clear selection details
         lastSelection = null;
       }, 200);
@@ -830,11 +904,37 @@ if (!window.__fontChangerLoaded) {
     // Intercept typed characters and convert them in real-time
     window.addEventListener('beforeinput', (e) => {
       if (!activeFont) return;
+      if (isInserting) return;
 
       if (e.inputType === 'insertText' && e.data) {
         e.preventDefault();
+        e.stopImmediatePropagation();
         const translated = convertText(e.data, activeFont);
-        document.execCommand('insertText', false, translated);
+
+        if (isFrameworkEditor(e.target)) {
+          insertTextEvent(e.target, translated);
+        } else {
+          isInserting = true;
+          try {
+            const succeeded = document.execCommand('insertText', false, translated);
+            if (!succeeded) {
+              const sel = window.getSelection();
+              if (sel && sel.rangeCount > 0) {
+                const range = sel.getRangeAt(0);
+                range.deleteContents();
+                const textNode = document.createTextNode(translated);
+                range.insertNode(textNode);
+                // Collapse range after the inserted text node to keep caret moving forward
+                range.setStartAfter(textNode);
+                range.setEndAfter(textNode);
+                sel.removeAllRanges();
+                sel.addRange(range);
+              }
+            }
+          } finally {
+            isInserting = false;
+          }
+        }
       }
     }, true);
 
