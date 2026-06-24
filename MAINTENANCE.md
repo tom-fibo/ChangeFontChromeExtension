@@ -54,6 +54,10 @@ When developing locally or reloading the extension, content scripts can be injec
 - To prevent normal ASCII alphanumeric strings (like `"bun"`) from being identified as upside-down and reversed, we maintain a strict set of unique non-ASCII flipped characters (`UNIQUE_UPSIDE_DOWN_CHARS`).
 - `removeFontFromText` only reverses word order if more than 33% of the characters belong to the unique set.
 
+### 6. Font Selection Grid and 2D Navigation
+- **Grid Layout**: The font selection menu uses a 4-column row-grouped grid layout. Fonts are assigned to a `group` property (`'serif'`, `'sans-serif'`, `'stylized'`, `'enclosed'`, `'special'`) to be rendered inside their respective rows (`.font-changer-row`).
+- **2D Keyboard Navigation**: Pressing `ArrowLeft` / `ArrowRight` changes the focus horizontally, wrapping around the flat list. Pressing `ArrowUp` / `ArrowDown` uses `getBoundingClientRect()` to compute the visual locations of elements and focus the closest element in the row above or below.
+
 ---
 
 ## Development and Testing

@@ -24,8 +24,8 @@
 
 .font-changer-modal {
   margin-top: 12vh;
-  width: 480px;
-  max-height: 480px;
+  width: 680px;
+  max-height: 600px;
   background: rgba(24, 24, 33, 0.85);
   backdrop-filter: blur(24px) saturate(190%);
   -webkit-backdrop-filter: blur(24px) saturate(190%);
@@ -84,27 +84,21 @@
 /* Scrollable Font List */
 .font-changer-list {
   flex: 1;
-  overflow-y: auto;
-  padding: 8px;
-  max-height: 320px;
+  overflow-y: visible;
+  padding: 12px;
+  max-height: none;
 }
 
-/* Custom Scrollbar */
-.font-changer-list::-webkit-scrollbar {
-  width: 6px;
+/* Font Changer Grid Rows */
+.font-changer-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
-.font-changer-list::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.font-changer-list::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 3px;
-}
-
-.font-changer-list::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.25);
+.font-changer-row:last-child {
+  margin-bottom: 0;
 }
 
 /* Font Items */
@@ -112,29 +106,31 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 16px;
-  margin-bottom: 4px;
+  padding: 6px 10px;
+  margin-bottom: 0;
   border-radius: 8px;
   cursor: pointer;
-  background: transparent;
-  border: 1px solid transparent;
-  transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
   user-select: none;
 }
 
 .font-changer-item:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .font-changer-item.selected {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.3);
 }
 
 .font-changer-item.keyboard-active {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.15);
-  transform: translateX(2px);
+  background: rgba(59, 130, 246, 0.15);
+  border-color: rgba(59, 130, 246, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .font-changer-item-details {
@@ -152,16 +148,16 @@
 
 .font-changer-name {
   color: rgba(255, 255, 255, 0.95);
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
 }
 
 .font-changer-active-badge {
   background: rgba(16, 185, 129, 0.15);
   color: #10b981;
-  font-size: 10px;
+  font-size: 8px;
   font-weight: 600;
-  padding: 1px 6px;
+  padding: 1px 4px;
   border-radius: 9999px;
   border: 1px solid rgba(16, 185, 129, 0.2);
   text-transform: uppercase;
@@ -170,7 +166,7 @@
 
 .font-changer-preview {
   color: rgba(255, 255, 255, 0.45);
-  font-size: 13px;
+  font-size: 12px;
   margin-top: 2px;
   word-break: break-all;
 }

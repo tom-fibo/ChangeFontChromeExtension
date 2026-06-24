@@ -25,8 +25,8 @@ This file tracks active development tasks, completed features, and bug fixes for
 
 ## Future Enhancements & Maintenance
 
-- [ ] Change the font selection menu to use a grid layout, so all fonts are viewable without scrolling.
+- [x] Change the font selection menu to use a grid layout, so all fonts are viewable without scrolling.
+- [X] Add more Unicode stylized scripts (e.g. bold-fraktur, italic cursive).
 - [ ] Add options page to customize keyboard shortcut combinations.
 - [ ] Add toggle to choose between light and dark glassmorphic themes.
-- [ ] Add more Unicode stylized scripts (e.g. bold-fraktur, italic cursive).
 - [ ] Research replacements for `document.execCommand` if deprecated in future Chrome releases.

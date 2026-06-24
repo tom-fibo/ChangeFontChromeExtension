@@ -27,6 +27,7 @@ if (!window.__fontChangerLoaded) {
       {
         id: 'math-bold',
         name: 'Math Bold',
+        group: 'serif',
         upper: makeRange(0x1D400),
         lower: makeRange(0x1D41A),
         digits: makeRange(0x1D7CE, 10),
@@ -35,6 +36,7 @@ if (!window.__fontChangerLoaded) {
       {
         id: 'math-italic',
         name: 'Math Italic',
+        group: 'serif',
         upper: makeRange(0x1D434),
         lower: (() => {
           const r = makeRange(0x1D44E);
@@ -46,6 +48,7 @@ if (!window.__fontChangerLoaded) {
       {
         id: 'math-bold-italic',
         name: 'Math Bold Italic',
+        group: 'serif',
         upper: makeRange(0x1D468),
         lower: makeRange(0x1D482),
         preview: '𝑨𝑩𝑿 𝒂𝒃𝒄'
@@ -53,6 +56,7 @@ if (!window.__fontChangerLoaded) {
       {
         id: 'math-sans',
         name: 'Math Sans-Serif',
+        group: 'sans-serif',
         upper: makeRange(0x1D5A0),
         lower: makeRange(0x1D5BA),
         digits: makeRange(0x1D7E2, 10),
@@ -61,6 +65,7 @@ if (!window.__fontChangerLoaded) {
       {
         id: 'math-sans-bold',
         name: 'Math Sans Bold',
+        group: 'sans-serif',
         upper: makeRange(0x1D5D4),
         lower: makeRange(0x1D5EE),
         digits: makeRange(0x1D7EC, 10),
@@ -69,6 +74,7 @@ if (!window.__fontChangerLoaded) {
       {
         id: 'math-sans-italic',
         name: 'Math Sans Italic',
+        group: 'sans-serif',
         upper: makeRange(0x1D608),
         lower: makeRange(0x1D622),
         preview: '𝘈𝘉𝘊 𝘢𝘓𝘤'
@@ -76,6 +82,7 @@ if (!window.__fontChangerLoaded) {
       {
         id: 'math-sans-bold-italic',
         name: 'Math Sans Bold Italic',
+        group: 'sans-serif',
         upper: makeRange(0x1D63C),
         lower: makeRange(0x1D656),
         preview: '𝘼𝘽𝘾 𝙖𝙗𝙘'
@@ -83,6 +90,7 @@ if (!window.__fontChangerLoaded) {
       {
         id: 'math-script-bold',
         name: 'Script Bold',
+        group: 'stylized',
         upper: makeRange(0x1D4D0),
         lower: makeRange(0x1D4EA),
         preview: '𝓐𝓑𝓒 𝓪𝓫𝓬'
@@ -90,6 +98,7 @@ if (!window.__fontChangerLoaded) {
       {
         id: 'math-fraktur-bold',
         name: 'Gothic Bold',
+        group: 'stylized',
         upper: makeRange(0x1D5C0),
         lower: makeRange(0x1D5DA),
         preview: '𝕬𝕭𝕮 𝖆𝖇𝖈'
@@ -97,6 +106,7 @@ if (!window.__fontChangerLoaded) {
       {
         id: 'double-struck',
         name: 'Blackboard Bold',
+        group: 'stylized',
         upper: (() => {
           const r = makeRange(0x1D538);
           const exc = { 2: '\u2102', 7: '\u210D', 13: '\u2115', 15: '\u2119', 16: '\u211A', 17: '\u211D', 25: '\u2124' };
@@ -112,6 +122,7 @@ if (!window.__fontChangerLoaded) {
       {
         id: 'monospace',
         name: 'Monospace',
+        group: 'stylized',
         upper: makeRange(0x1D670),
         lower: makeRange(0x1D68A),
         digits: makeRange(0x1D7F6, 10),
@@ -120,6 +131,7 @@ if (!window.__fontChangerLoaded) {
       {
         id: 'small-caps',
         name: 'Small Caps',
+        group: 'special',
         upper: makeRange(65, 26),
         lower: Array.from("ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘǫʀꜱᴛᴜᴠᴡxʏᴢ"),
         preview: 'ᴀʙᴄᴅᴇꜰɢ ʜɪᴊᴋʟᴍɴ'
@@ -127,6 +139,7 @@ if (!window.__fontChangerLoaded) {
       {
         id: 'circled',
         name: 'Circled',
+        group: 'enclosed',
         upper: makeRange(0x24B6),
         lower: makeRange(0x24D0),
         digits: ['⓪', '①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨'],
@@ -135,6 +148,7 @@ if (!window.__fontChangerLoaded) {
       {
         id: 'negative-circled',
         name: 'Circled Negative',
+        group: 'enclosed',
         upper: makeRange(0x1F150),
         lower: makeRange(0x1F150),
         digits: ['⓿', '❶', '❷', '❸', '❹', '❺', '❻', '❼', '❽', '❾'],
@@ -143,6 +157,7 @@ if (!window.__fontChangerLoaded) {
       {
         id: 'parenthesized',
         name: 'Parenthesized',
+        group: 'special',
         upper: makeRange(0x249C),
         lower: makeRange(0x249C),
         digits: ['0', '⑴', '⑵', '⑶', '⑷', '⑸', '⑹', '⑺', '⑻', '⑼'],
@@ -151,6 +166,7 @@ if (!window.__fontChangerLoaded) {
       {
         id: 'squared',
         name: 'Squared',
+        group: 'enclosed',
         upper: makeRange(0x1F130),
         lower: makeRange(0x1F130),
         preview: '🄰🄱🄲 🄳🄴🄵'
@@ -158,13 +174,91 @@ if (!window.__fontChangerLoaded) {
       {
         id: 'negative-squared',
         name: 'Squared Negative',
+        group: 'enclosed',
         upper: makeRange(0x1F170),
         lower: makeRange(0x1F170),
         preview: '🅰🅱🅲 🅳🅴🅵'
       },
       {
+        id: 'math-script',
+        name: 'Script',
+        group: 'stylized',
+        upper: (() => {
+          const r = makeRange(0x1D49C);
+          const exc = { 1: '\u212C', 4: '\u2130', 5: '\u2131', 7: '\u210B', 8: '\u2110', 11: '\u2112', 12: '\u2133', 17: '\u211B' };
+          for (const [idx, val] of Object.entries(exc)) {
+            r[parseInt(idx)] = val;
+          }
+          return r;
+        })(),
+        lower: (() => {
+          const r = makeRange(0x1D4B6);
+          const exc = { 4: '\u212F', 6: '\u210A', 11: '\u2113', 14: '\u2134' };
+          for (const [idx, val] of Object.entries(exc)) {
+            r[parseInt(idx)] = val;
+          }
+          return r;
+        })(),
+        preview: '𝒜ℬ𝒞 𝒶𝒷𝒸'
+      },
+      {
+        id: 'math-fraktur',
+        name: 'Gothic',
+        group: 'stylized',
+        upper: (() => {
+          const r = makeRange(0x1D504);
+          const exc = { 2: '\u212D', 7: '\u210C', 8: '\u2111', 17: '\u211C', 25: '\u2128' };
+          for (const [idx, val] of Object.entries(exc)) {
+            r[parseInt(idx)] = val;
+          }
+          return r;
+        })(),
+        lower: makeRange(0x1D51E),
+        preview: '𝔄𝔅ℭ 𝔞𝔟𝔠'
+      },
+      {
+        id: 'fullwidth',
+        name: 'Fullwidth',
+        group: 'special',
+        upper: makeRange(0xFF21),
+        lower: makeRange(0xFF41),
+        digits: makeRange(0xFF10, 10),
+        preview: 'ＡＢＣ ａｂｃ ０１２'
+      },
+      {
+        id: 'superscript',
+        name: 'Superscript',
+        group: 'special',
+        upper: Array.from('ᴬᴮᶜᴰᴱᶠᴳᴴᴵᴶᴷᴸᴹᴺᴼᴾ𐞥ᴿˢᵀᵁⱽᵂˣʸᶻ'),
+        lower: Array.from('ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖ𐞥ʳˢᵗᵘᵛʷˣʸᶻ'),
+        digits: ['⁰', '¹', '²', '³', '⁴', '⁵', '⁶', '⁷', '⁸', '⁹'],
+        preview: 'ᴬᴮᶜ ᵃᵇᶜ ⁰¹²'
+      },
+      {
+        id: 'strikethrough',
+        name: 'Strikethrough',
+        group: 'special',
+        isCustom: true,
+        preview: 't̶e̶x̶t̶'
+      },
+      {
+        id: 'underline',
+        name: 'Underline',
+        group: 'special',
+        isCustom: true,
+        preview: 't̲e̲x̲t̲'
+      },
+      {
+        id: 'slash',
+        name: 'Slash-through',
+        group: 'special',
+        isCustom: true,
+        preview: 't̷e̷x̷t̷'
+      },
+      {
         id: 'upside-down',
         name: 'Upside-Down',
+        group: 'special',
         isCustom: true,
         preview: 'ʇxǝʇ uʍop-ǝpᴉsdn'
       }
@@ -238,6 +332,15 @@ if (!window.__fontChangerLoaded) {
         } else {
           return UPSIDE_DOWN_MAP[text] || text;
         }
+      }
+      if (font.id === 'strikethrough') {
+        return Array.from(text).map(c => c + '\u0336').join('');
+      }
+      if (font.id === 'underline') {
+        return Array.from(text).map(c => c + '\u0332').join('');
+      }
+      if (font.id === 'slash') {
+        return Array.from(text).map(c => c + '\u0338').join('');
       }
 
       return Array.from(text).map(char => {
@@ -415,8 +518,8 @@ if (!window.__fontChangerLoaded) {
 
       .font-changer-modal {
         margin-top: 12vh;
-        width: 480px;
-        max-height: 480px;
+        width: 680px;
+        max-height: 600px;
         background: rgba(24, 24, 33, 0.85);
         backdrop-filter: blur(24px) saturate(190%);
         -webkit-backdrop-filter: blur(24px) saturate(190%);
@@ -473,55 +576,51 @@ if (!window.__fontChangerLoaded) {
 
       .font-changer-list {
         flex: 1;
-        overflow-y: auto;
-        padding: 8px;
-        max-height: 320px;
+        overflow-y: visible;
+        padding: 12px;
+        max-height: none;
       }
 
-      .font-changer-list::-webkit-scrollbar {
-        width: 6px;
+      .font-changer-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        margin-bottom: 8px;
       }
 
-      .font-changer-list::-webkit-scrollbar-track {
-        background: transparent;
-      }
-
-      .font-changer-list::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.15);
-        border-radius: 3px;
-      }
-
-      .font-changer-list::-webkit-scrollbar-thumb:hover {
-        background: rgba(255, 255, 255, 0.25);
+      .font-changer-row:last-child {
+        margin-bottom: 0;
       }
 
       .font-changer-item {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 10px 16px;
-        margin-bottom: 4px;
+        padding: 6px 10px;
+        margin-bottom: 0;
         border-radius: 8px;
         cursor: pointer;
-        background: transparent;
-        border: 1px solid transparent;
-        transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
         user-select: none;
       }
 
       .font-changer-item:hover {
-        background: rgba(255, 255, 255, 0.05);
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(255, 255, 255, 0.1);
       }
 
       .font-changer-item.selected {
-        background: rgba(255, 255, 255, 0.1);
-        border-color: rgba(255, 255, 255, 0.08);
+        background: rgba(16, 185, 129, 0.1);
+        border-color: rgba(16, 185, 129, 0.3);
       }
 
       .font-changer-item.keyboard-active {
-        background: rgba(255, 255, 255, 0.15);
-        border-color: rgba(255, 255, 255, 0.15);
-        transform: translateX(2px);
+        background: rgba(59, 130, 246, 0.15);
+        border-color: rgba(59, 130, 246, 0.4);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
       }
 
       .font-changer-item-details {
@@ -539,16 +638,16 @@ if (!window.__fontChangerLoaded) {
 
       .font-changer-name {
         color: rgba(255, 255, 255, 0.95);
-        font-size: 14px;
+        font-size: 12px;
         font-weight: 500;
       }
 
       .font-changer-active-badge {
         background: rgba(16, 185, 129, 0.15);
         color: #10b981;
-        font-size: 10px;
+        font-size: 8px;
         font-weight: 600;
-        padding: 1px 6px;
+        padding: 1px 4px;
         border-radius: 9999px;
         border: 1px solid rgba(16, 185, 129, 0.2);
         text-transform: uppercase;
@@ -557,7 +656,7 @@ if (!window.__fontChangerLoaded) {
 
       .font-changer-preview {
         color: rgba(255, 255, 255, 0.45);
-        font-size: 13px;
+        font-size: 12px;
         margin-top: 2px;
         word-break: break-all;
       }
@@ -666,7 +765,7 @@ if (!window.__fontChangerLoaded) {
             <div class="font-changer-status">No active font</div>
             <div class="font-changer-shortcuts">
               <div class="font-changer-shortcut-item">
-                <span class="font-changer-key">↑↓</span> navigate
+                <span class="font-changer-key">←↑↓→</span> navigate
               </div>
               <div class="font-changer-shortcut-item">
                 <span class="font-changer-key">Enter</span> select
@@ -704,11 +803,19 @@ if (!window.__fontChangerLoaded) {
           e.stopPropagation();
           e.preventDefault();
         } else if (e.key === 'ArrowDown') {
-          navigateList(1);
+          navigateList(0, 1);
           e.stopPropagation();
           e.preventDefault();
         } else if (e.key === 'ArrowUp') {
-          navigateList(-1);
+          navigateList(0, -1);
+          e.stopPropagation();
+          e.preventDefault();
+        } else if (e.key === 'ArrowLeft') {
+          navigateList(-1, 0);
+          e.stopPropagation();
+          e.preventDefault();
+        } else if (e.key === 'ArrowRight') {
+          navigateList(1, 0);
           e.stopPropagation();
           e.preventDefault();
         } else if (e.key === 'Enter') {
@@ -719,7 +826,7 @@ if (!window.__fontChangerLoaded) {
       });
     }
 
-    function navigateList(direction) {
+    function navigateList(dx, dy) {
       const listEl = shadowRoot.querySelector('.font-changer-list');
       const items = listEl.querySelectorAll('.font-changer-item');
       if (items.length === 0) return;
@@ -728,11 +835,88 @@ if (!window.__fontChangerLoaded) {
         items[focusedIndex].classList.remove('keyboard-active');
       }
 
-      focusedIndex = (focusedIndex + direction + items.length) % items.length;
+      if (dx !== 0) {
+        // Horizontal: simple flat wrap-around navigation
+        focusedIndex = (focusedIndex + dx) % items.length;
+        if (focusedIndex < 0) {
+          focusedIndex += items.length;
+        }
+      } else if (dy !== 0) {
+        // Vertical: search bounding rects of visible elements to find the closest item in row below/above
+        const currentEl = items[focusedIndex];
+        if (currentEl) {
+          const currentRect = currentEl.getBoundingClientRect();
+          const centerX = currentRect.left + currentRect.width / 2;
+
+          let bestIndex = -1;
+
+          if (dy > 0) {
+            // Move down: find row below
+            let minDistanceX = Infinity;
+            let nextRowTop = Infinity;
+
+            for (let i = 0; i < items.length; i++) {
+              const rect = items[i].getBoundingClientRect();
+              if (rect.top >= currentRect.bottom - 2) {
+                if (rect.top < nextRowTop) {
+                  nextRowTop = rect.top;
+                }
+              }
+            }
+
+            if (nextRowTop !== Infinity) {
+              for (let i = 0; i < items.length; i++) {
+                const rect = items[i].getBoundingClientRect();
+                if (Math.abs(rect.top - nextRowTop) < 5) {
+                  const itemCenterX = rect.left + rect.width / 2;
+                  const dist = Math.abs(itemCenterX - centerX);
+                  if (dist < minDistanceX) {
+                    minDistanceX = dist;
+                    bestIndex = i;
+                  }
+                }
+              }
+            }
+          } else {
+            // Move up: find row above
+            let minDistanceX = Infinity;
+            let prevRowBottom = -Infinity;
+
+            for (let i = 0; i < items.length; i++) {
+              const rect = items[i].getBoundingClientRect();
+              if (rect.bottom <= currentRect.top + 2) {
+                if (rect.bottom > prevRowBottom) {
+                  prevRowBottom = rect.bottom;
+                }
+              }
+            }
+
+            if (prevRowBottom !== -Infinity) {
+              for (let i = 0; i < items.length; i++) {
+                const rect = items[i].getBoundingClientRect();
+                if (Math.abs(rect.bottom - prevRowBottom) < 5) {
+                  const itemCenterX = rect.left + rect.width / 2;
+                  const dist = Math.abs(itemCenterX - centerX);
+                  if (dist < minDistanceX) {
+                    minDistanceX = dist;
+                    bestIndex = i;
+                  }
+                }
+              }
+            }
+          }
+
+          if (bestIndex !== -1) {
+            focusedIndex = bestIndex;
+          }
+        }
+      }
 
       const targetEl = items[focusedIndex];
-      targetEl.classList.add('keyboard-active');
-      targetEl.scrollIntoView({ block: 'nearest' });
+      if (targetEl) {
+        targetEl.classList.add('keyboard-active');
+        targetEl.scrollIntoView({ block: 'nearest' });
+      }
     }
 
     function selectFocusedFont() {
@@ -777,33 +961,66 @@ if (!window.__fontChangerLoaded) {
         return;
       }
 
-      visibleFonts.forEach((font, idx) => {
-        const item = document.createElement('div');
-        item.className = 'font-changer-item';
-        if (idx === 0) item.classList.add('keyboard-active');
-        
-        const isActive = activeFont && activeFont.id === font.id;
-        if (isActive) {
-          item.classList.add('selected');
+      // Group visible fonts by their group category to render them in rows
+      const groups = {
+        'serif': [],
+        'sans-serif': [],
+        'stylized': [],
+        'enclosed': [],
+        'special': []
+      };
+
+      visibleFonts.forEach(font => {
+        if (groups[font.group]) {
+          groups[font.group].push(font);
         }
-
-        item.innerHTML = `
-          <div class="font-changer-item-details">
-            <div class="font-changer-name-row">
-              <span class="font-changer-name">${font.name}</span>
-              ${isActive ? `<span class="font-changer-active-badge">Active</span>` : ''}
-            </div>
-            <div class="font-changer-preview">${font.preview}</div>
-          </div>
-        `;
-
-        item.addEventListener('mousedown', (e) => {
-          e.preventDefault();
-          applyFont(font);
-        });
-
-        listEl.appendChild(item);
       });
+
+      const orderedVisibleFonts = [];
+      const groupKeys = ['serif', 'sans-serif', 'stylized', 'enclosed', 'special'];
+
+      groupKeys.forEach(groupKey => {
+        const groupFonts = groups[groupKey];
+        if (groupFonts.length > 0) {
+          const rowEl = document.createElement('div');
+          rowEl.className = 'font-changer-row';
+          
+          groupFonts.forEach(font => {
+            orderedVisibleFonts.push(font);
+            const idx = orderedVisibleFonts.length - 1;
+
+            const item = document.createElement('div');
+            item.className = 'font-changer-item';
+            if (idx === 0) item.classList.add('keyboard-active');
+            
+            const isActive = activeFont && activeFont.id === font.id;
+            if (isActive) {
+              item.classList.add('selected');
+            }
+
+            item.innerHTML = `
+              <div class="font-changer-item-details">
+                <div class="font-changer-name-row">
+                  <span class="font-changer-name">${font.name}</span>
+                  ${isActive ? `<span class="font-changer-active-badge">Active</span>` : ''}
+                </div>
+                <div class="font-changer-preview">${font.preview}</div>
+              </div>
+            `;
+
+            item.addEventListener('mousedown', (e) => {
+              e.preventDefault();
+              applyFont(font);
+            });
+
+            rowEl.appendChild(item);
+          });
+
+          listEl.appendChild(rowEl);
+        }
+      });
+
+      visibleFonts = orderedVisibleFonts;
     }
 
     function updateStatus() {
